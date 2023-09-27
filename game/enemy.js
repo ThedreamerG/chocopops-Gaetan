@@ -12,7 +12,8 @@ var Enemy = function( position, direction) {
 
     var singleGeometry = new THREE.Geometry();
 
-    vehiculeMesh = new THREE.ConeGeometry(5, 20, 32);
+    // the vehicule is a square
+    var enemyMesh = new THREE.BoxGeometry(5, 5, 5);
     this.graphic = new THREE.Mesh(vehiculeMesh, this.material);
     this.graphic.position.z = 6;
 
@@ -52,16 +53,24 @@ Enemy.prototype.turnLeft = function (angle) {
 };
 
 Enemy.prototype.move = function () {
-    // move to the left then 2 seconds later move to the right
-    var now = clock.getElapsedTime();
-    if (now - this.lastMove > 2) {
-        this.lastMove = now;
-        this.speed = -this.speed;
+    var moveTo = new THREE.Vector3(
+        this.speed * Math.cos(this.direction) + this.position.x,
+        this.speed * Math.sin(this.direction) + this.position.y,
+        this.graphic.position.z
+    );
+
+    this.position = moveTo;
+
+    if (this.speed > 0) {
+        this.speed = this.speed - 0.04;
     }
-    this.graphic.position.x += this.speed * Math.cos(this.direction);
-    this.graphic.position.y += this.speed * Math.sin(this.direction);
-    this.graphic.position.z = 6;
-    //light1.position.z = this.graphic.position.z + 500;
+    else if (this.speed < 0) {
+        this.speed = this.speed + 0.04;
+    }
+
+    this.graphic.position.x = this.position.x;
+    this.graphic.position.y = this.position.y;
+
 };
 
 Enemy.prototype.dead = function () {
@@ -79,9 +88,37 @@ Enemy.prototype.dead = function () {
         audio.pause();
         init();
     }, 5000);
-
-    
 }
 
-    
+Enemy.prototype.moveai = function () {
+    // Initialize a reference to the enemy instance
+    var self = this;
+
+    // Function to make the enemy move straight
+    function moveStraight() {
+        self.accelerate(1);  // Adjust this value to control speed
+        self.move();
+    }
+
+    // Function to turn the enemy by 180 degrees
+    function turnAround() {
+        self.turnRight(Math.PI);  // 180 degrees in radians
+    }
+
+    // Set the initial interval for moving straight
+    var moveInterval = setInterval(moveStraight, 50);  // Adjust this value to control the update frequency
+
+    // After 2 seconds, clear the interval, turn around, and set the interval again
+    setTimeout(function() {
+        clearInterval(moveInterval);  // Stop moving straight
+        turnAround();                 // Turn by 180 degrees
+
+        // Set the interval again to start moving straight in the opposite direction
+        moveInterval = setInterval(moveStraight, 50);
+        
+        // And, after another 2 seconds, repeat the whole process
+        setTimeout(arguments.callee, 2000);
+
+    }, 2000);
+};
 

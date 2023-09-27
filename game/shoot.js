@@ -42,30 +42,33 @@ function collisions()
 function bullet_collision()
 {
     //collision between bullet and walls
-    for (var i = 0; i < player1.bullets.length; i++)
+    for (var i = player1.bullets.length - 1; i >= 0; i--)
     {
-        if (Math.abs(player1.bullets[i].position.x) >= WIDTH / 2 ||
-            Math.abs(player1.bullets[i].position.y) >= HEIGHT / 2)
+        var bullet = player1.bullets[i];
+
+        // Check for bullet out of bounds
+        if (Math.abs(bullet.position.x) >= WIDTH / 2 ||
+            Math.abs(bullet.position.y) >= HEIGHT / 2)
         {
-            scene.remove(player1.bullets[i]);
+            scene.remove(bullet);
             player1.bullets.splice(i, 1);
-            i--;
+            continue;  // Skip to the next iteration
         }
 
         //collision between bullet and enemy
-        if (Math.abs(player1.bullets[i].position.x - enemy1.graphic.position.x) < 10 &&
-            Math.abs(player1.bullets[i].position.y - enemy1.graphic.position.y) < 10)
+        if (Math.abs(bullet.position.x - enemy1.graphic.position.x) < 10 &&
+            Math.abs(bullet.position.y - enemy1.graphic.position.y) < 10)
         {
-            scene.remove(player1.bullets[i]);
+            scene.remove(bullet);
             player1.bullets.splice(i, 1);
-            i--;
             enemy1.dead();
+            continue;  // Skip to the next iteration
         }
 
-        //collision between bullet and player
+        //collision between bullet and player (you can add this logic if you wish)
     }
-
 }
+
 
 function player_collision()
 {
@@ -80,6 +83,17 @@ function player_collision()
     if ( y > HEIGHT )
         player1.graphic.position.y -= y - HEIGHT;
 
+    //collision between player and enemy
+
+    if (Math.abs(player1.graphic.position.x - enemy1.graphic.position.x) < 10 &&
+        Math.abs(player1.graphic.position.y - enemy1.graphic.position.y) < 10)
+    {
+        player1.life -= 1;
+        if (player1.life <= 0)
+            player1.dead();
+    }
+
+
 }
 
 function player_falling()
@@ -89,6 +103,9 @@ function player_falling()
     var sizeOfTileY = HEIGHT / nb_tile;
     var x = player1.graphic.position.x | 0;
     var y = player1.graphic.position.y | 0;
+
+    var x_alt = player1.position.x | 0;
+    var y_alt = player1.position.y | 0;
     var length = noGround.length;
     var element = null;
 
@@ -97,18 +114,19 @@ function player_falling()
         if (element == null)
             continue;
 
-        var tileX = (element[0]) | 0;
-        var tileY = (element[1]) | 0;
-        var mtileX = (element[0] + sizeOfTileX) | 0;
-        var mtileY = (element[1] + sizeOfTileY) | 0;
+        var tileX = (element[0] - sizeOfTileX / 2) | 0;
+        var tileY = (element[1] - sizeOfTileY / 2) | 0;
+        var mtileX = (element[0] + sizeOfTileX / 2) | 0;
+        var mtileY = (element[1] + sizeOfTileY / 2) | 0;
 
         if ((x > tileX)
             && (x < mtileX)
             && (y > tileY) 
             && (y < mtileY))
-        {
-            console.info("tileX" + tileX + " tileY" + tileY + " mtileX" + mtileX + " mtileY" + mtileY);
-            player1.dead();
+        {            
+            player1.life -= 1;
+            if (player1.life <= 0)
+                player1.dead();
         }
     }
 

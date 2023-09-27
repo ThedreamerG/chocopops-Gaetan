@@ -2,7 +2,7 @@ var Player = function(name, color, position, direction) {
 
     this.name = name;
     this.position = position;
-    this.life = 3;
+    this.life = 3000;	
     this.bullets = new Array();
     this.direction = direction;
     this.speed = 0;
@@ -69,7 +69,7 @@ Player.prototype.move = function () {
 
     // Collision detection for the left wall
     var leftWallX = -WIDTH/2;
-    if (moveTo.x <= leftWallX) {
+    if (moveTo.x == leftWallX) {
         moveTo.x = leftWallX;
         this.speed = 0; // stop the player
         return;
@@ -89,5 +89,4 @@ Player.prototype.move = function () {
     
     light1.position.x = this.position.x;
     light1.position.y = this.position.y;
-    //li ght1.position.z = this.graphic.position.z + 500;
 };

@@ -30,7 +30,7 @@ A video game with three.js
 - [X] : As a player, I want to destroy ennemy when I shot them
 - [ ] : As a ennemy, I want to move on one axe
 - [ ] : As a player, I want to decrease my life when I am touch by an ennemy
-- [ ] : As a player, I want to decrease my life when I fall 
+- [X] : As a player, I want to decrease my life when I fall 
 
 Extra 
 - [X] : As a player, I want to have FF7 music when I kill an ennemy

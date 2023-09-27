@@ -1,3 +1,5 @@
+var enemy_move = true;
+
 function update()
 {
     var delta = clock.getDelta(); // seconds.
@@ -14,5 +16,13 @@ function update()
         player1.decelerate(moveDistance);
 
     player1.move();
+
+    if (enemy_move)
+    {
+        enemy1.moveai();
+        enemy_move = false;
+    }
+
+    
     controls.update();
 }
