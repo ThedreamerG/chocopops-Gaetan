@@ -61,11 +61,11 @@ function bullet_collision()
         {
             scene.remove(bullet);
             player1.bullets.splice(i, 1);
-            enemy1.dead();
+            enemy1.life -= 1;
+            if (enemy1.life <= 0)
+                enemy1.dead();
             continue;  // Skip to the next iteration
         }
-
-        //collision between bullet and player (you can add this logic if you wish)
     }
 }
 

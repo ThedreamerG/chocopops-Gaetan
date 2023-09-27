@@ -91,24 +91,19 @@ Enemy.prototype.dead = function () {
 }
 
 Enemy.prototype.moveai = function () {
-    // Initialize a reference to the enemy instance
     var self = this;
 
-    // Function to make the enemy move straight
     function moveStraight() {
-        self.accelerate(1);  // Adjust this value to control speed
+        self.accelerate(50); 
         self.move();
     }
 
     // Function to turn the enemy by 180 degrees
     function turnAround() {
-        self.turnRight(Math.PI);  // 180 degrees in radians
+        self.turnRight(Math.PI);  
     }
 
-    // Set the initial interval for moving straight
-    var moveInterval = setInterval(moveStraight, 50);  // Adjust this value to control the update frequency
-
-    // After 2 seconds, clear the interval, turn around, and set the interval again
+    var moveInterval = setInterval(moveStraight, 50);
     setTimeout(function() {
         clearInterval(moveInterval);  // Stop moving straight
         turnAround();                 // Turn by 180 degrees

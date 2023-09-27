@@ -69,10 +69,8 @@ Player.prototype.move = function () {
 
     // Collision detection for the left wall
     var leftWallX = -WIDTH/2;
-    if (moveTo.x == leftWallX) {
+    if (moveTo.x <= leftWallX) {
         moveTo.x = leftWallX;
-        this.speed = 0; // stop the player
-        return;
     }
 
     this.position = moveTo;
