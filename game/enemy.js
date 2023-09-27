@@ -94,7 +94,7 @@ Enemy.prototype.moveai = function () {
     var self = this;
 
     function moveStraight() {
-        self.accelerate(50); 
+        self.accelerate(5); 
         self.move();
     }
 

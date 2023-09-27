@@ -1,5 +1,3 @@
-var enemy_move = true;
-
 function update()
 {
     var delta = clock.getDelta(); // seconds.
@@ -17,10 +15,9 @@ function update()
 
     player1.move();
 
-    if (enemy_move)
+    if (enemy1.speed == 0)
     {
         enemy1.moveai();
-        enemy_move = false;
     }
 
     
