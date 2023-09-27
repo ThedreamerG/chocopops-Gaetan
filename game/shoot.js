@@ -51,6 +51,18 @@ function bullet_collision()
             player1.bullets.splice(i, 1);
             i--;
         }
+
+        //collision between bullet and enemy
+        if (Math.abs(player1.bullets[i].position.x - enemy1.graphic.position.x) < 10 &&
+            Math.abs(player1.bullets[i].position.y - enemy1.graphic.position.y) < 10)
+        {
+            scene.remove(player1.bullets[i]);
+            player1.bullets.splice(i, 1);
+            i--;
+            enemy1.dead();
+        }
+
+        //collision between bullet and player
     }
 
 }
@@ -82,6 +94,8 @@ function player_falling()
 
     for (var i = 0; i < length; i++) {
         element = noGround[i];
+        if (element == null)
+            continue;
 
         var tileX = (element[0]) | 0;
         var tileY = (element[1]) | 0;
@@ -93,7 +107,8 @@ function player_falling()
             && (y > tileY) 
             && (y < mtileY))
         {
-           player1.dead();
+            console.info("tileX" + tileX + " tileY" + tileY + " mtileX" + mtileX + " mtileY" + mtileY);
+            player1.dead();
         }
     }
 

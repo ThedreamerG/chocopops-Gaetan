@@ -51,13 +51,13 @@ Player.prototype.displayInfo = function () {
 }
 
 Player.prototype.turnRight = function (angle) {
-    this.direction += angle;
-    this.graphic.rotateOnAxis(new THREE.Vector3(0,0,1), +angle);
+    this.direction -= angle;
+    this.graphic.rotateOnAxis(new THREE.Vector3(0,0,1), -angle);
 };
 
 Player.prototype.turnLeft = function (angle) {
     this.direction += angle;
-    this.graphic.rotateOnAxis(new THREE.Vector3(0,0,1), angle);
+    this.graphic.rotateOnAxis(new THREE.Vector3(0,0,1), +angle);
 };
 
 Player.prototype.move = function () {
@@ -66,6 +66,14 @@ Player.prototype.move = function () {
         this.speed * Math.sin(this.direction) + this.position.y,
         this.graphic.position.z
     );
+
+    // Collision detection for the left wall
+    var leftWallX = -WIDTH/2;
+    if (moveTo.x <= leftWallX) {
+        moveTo.x = leftWallX;
+        this.speed = 0; // stop the player
+        return;
+    }
 
     this.position = moveTo;
 
