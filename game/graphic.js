@@ -66,13 +66,16 @@ function Ground(color, size_x, size_y, nb_tile)
 
     while (containsVector(noGround, vector_player, sizeOfTileX, sizeOfTileY))
     {
-        vector_player.x = Math.floor(Math.random() * WIDTH) - WIDTH/2;
-        vector_player.y = Math.floor(Math.random() * HEIGHT) - HEIGHT/2;
+        // random position of player between -WIDTH/4 and WIDTH/4
+        vector_player.x = Math.floor(Math.random() * WIDTH/2) - WIDTH/4;
+        vector_player.y = Math.floor(Math.random() * HEIGHT/2) - HEIGHT/4;
+
     }
-    while (containsVector(noGround, vector_enemy, sizeOfTileX, sizeOfTileY))
+    while (containsVector(noGround, vector_enemy, sizeOfTileX, sizeOfTileY) && vector_enemy.x != vector_player.x && vector_enemy.y != vector_player.y)
     {
-        vector_enemy.x = Math.floor(Math.random() * WIDTH) - WIDTH/2;
-        vector_enemy.y = Math.floor(Math.random() * HEIGHT) - HEIGHT/2;
+        // random position of enemy between -WIDTH/4 and WIDTH/4
+        vector_enemy.x = Math.floor(Math.random() * WIDTH/2) - WIDTH/4;
+        vector_enemy.y = Math.floor(Math.random() * HEIGHT/2) - HEIGHT/4;
     }
 
     player1 = new Player("player1", 0xffff00, vector_player, 0);
@@ -97,14 +100,19 @@ function Light(name, color, position)
 }
 
 function containsVector(array, vector, sizeOfTileX, sizeOfTileY) {
-    for (var i = 0; i < array.length; i++) {
-        pos_X = array[i][0];
-        pos_Y = array[i][1];
-        x = vector.x;
-        y = vector.y;
-        if (x >= pos_X && x <= pos_X + sizeOfTileX &&
-            y >= pos_Y && y <= pos_Y + sizeOfTileY)
-            return true;
+    var halfSizeX = sizeOfTileX / 2;
+    var halfSizeY = sizeOfTileY / 2;
+
+    for (var i = 0, len = array.length; i < len; i++) {
+        var tileX = array[i][0] - halfSizeX;
+        var tileY = array[i][1] - halfSizeY;
+        var mtileX = array[i][0] + halfSizeX;
+        var mtileY = array[i][1] + halfSizeY;
+
+        if (vector.x > tileX && vector.x < mtileX && vector.y > tileY && vector.y < mtileY) {
+            return true;            
+        }
     }
+
     return false;
 }

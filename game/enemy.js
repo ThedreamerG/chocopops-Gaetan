@@ -12,10 +12,10 @@ var Enemy = function( position, direction) {
 
     var singleGeometry = new THREE.Geometry();
 
-    // the vehicule is a square
-    var enemyMesh = new THREE.BoxGeometry(5, 5, 5);
-    this.graphic = new THREE.Mesh(vehiculeMesh, this.material);
-    this.graphic.position.z = 6;
+    var size = 20; // Size of the square
+    var enemyMesh = new THREE.BoxGeometry(size, size, size);
+    this.graphic = new THREE.Mesh(enemyMesh, this.material);
+    this.graphic.position.z = 10; // Adjusted Z position
 
     this.graphic.rotateOnAxis(new THREE.Vector3(0,0,1), this.direction+(3*Math.PI/2));
 };
